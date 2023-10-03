@@ -1,4 +1,5 @@
-import React, { Component } from 'react'
+import { Component } from 'react'
+import * as React from 'react'
 import { Link, Route, Router, Switch } from 'react-router-dom'
 import { Grid, Menu, Segment } from 'semantic-ui-react'
 
@@ -91,7 +92,7 @@ export default class App extends Component<AppProps, AppState> {
         <Route
           path="/"
           exact
-          render={props => {
+          render={(props) => {
             return <Todos {...props} auth={this.props.auth} />
           }}
         />
@@ -99,7 +100,7 @@ export default class App extends Component<AppProps, AppState> {
         <Route
           path="/todos/:todoId/edit"
           exact
-          render={props => {
+          render={(props) => {
             return <EditTodo {...props} auth={this.props.auth} />
           }}
         />
