@@ -1,18 +1,33 @@
 {
   "$schema": "http://json-schema.org/draft-04/schema#",
-  "title": "group",
+  "title": "create-todo-request",
   "type": "object",
   "properties": {
-    "name": {
+    "userId": {
       "type": "string"
     },
+    "todoId": {
+      "type": "string"
+    },
+    "createdAt": {
+      "type": "string"
+    },
+    "name": {
+      "type": "string",
+      "minLength": 1
+    },
     "dueDate": {
+      "type": "string"
+    },
+    "done": {
+      "type": "boolean"
+    },
+    "attachmentUrl": {
       "type": "string"
     }
   },
   "required": [
-    "name",
-    "dueDate"
+    "name","dueDate"
   ],
   "additionalProperties": false
 }
