@@ -1,0 +1,16 @@
+language: node.js
+node_js:
+  - "14"
+
+install:
+  - npm install -g serverless
+  - travis_retry npm install
+  - npm install
+
+before_install: cd backend
+
+script:
+  - serverless plugin install -n serverless-webpack
+  - serverless plugin install --name serverless-deployment-bucket
+  - serverless config credentials --provider aws --key "$AWS_ACCESS_KEY_ID" --secret "$AWS_SECRET_KEY" --profile "$AWS_PROFILE"
+  - serverless deploy
