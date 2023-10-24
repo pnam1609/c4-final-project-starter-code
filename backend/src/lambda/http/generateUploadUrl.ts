@@ -1,23 +1,16 @@
 import 'source-map-support/register'
-
 import { APIGatewayProxyEvent, APIGatewayProxyResult } from 'aws-lambda'
-import * as AWS from 'aws-sdk'
-import * as AWSXRay from 'aws-xray-sdk'
 import * as middy from 'middy'
 import { cors, httpErrorHandler } from 'middy/middlewares'
 import { createLogger } from '../../utils/logger'
 import { TodosAccess } from '../../dataLayer/todosAccess'
 import { getUserId } from '../utils'
-
-const XAWS = AWSXRay.captureAWS(AWS)
+import { AttachmentAccess } from '../../fileLayer/attachmentAccess'
 
 const bucketName = process.env.ATTACHMENT_S3_BUCKET
-const urlExpiration = Number(process.env.SIGNED_URL_EXPIRATION)
-const s3 = new XAWS.S3({
-  signatureVersion: 'v4'
-})
 
 const todosAccess = new TodosAccess()
+const attachmentAccess = new AttachmentAccess()
 const logger = createLogger('generateUploadUrl')
 
 export const handler = middy(
@@ -29,13 +22,7 @@ export const handler = middy(
     })
     const userId = getUserId(event)
 
-    const uploadUrl = s3.getSignedUrl('putObject', {
-      Bucket: bucketName,
-      Key: todoId,
-      Expires: urlExpiration,
-      ACL: 'public-read', 
-    })
-
+    const uploadUrl = attachmentAccess.generateImage(todoId)
     logger.info('uploadUrl', uploadUrl)
 
     try {
